@@ -1,43 +1,44 @@
-#include<iostream>
+#include <iostream>
+#include <string>
+#include <vector>
 
-using namespace std;
-
-class phanso{
-private:
-    int tu, mau;
+class Student {
 public:
-    phanso();
-    phanso(int);
-    phanso(int,int);
-    
-};
+    Student(const std::string& name, int age, const std::string& id)
+        : name(name), age(age), id(id) {}
 
-phanso::phanso(){
-    tu = 0; mau = 1;
-    cout << tu << "/"  << endl;
-}
-
-phanso::phanso(int t){
-    tu = t; mau = 1;
-    cout << tu << "/" << mau<< endl;
-}
-
-phanso::phanso(int t, int m){
-    if(m < 0){
-        t = -t ; m = -m;
+    void displayInfo() const {
+        std::cout << "Name: " << name << std::endl;
+        std::cout << "Age: " << age << std::endl;
+        std::cout << "ID: " << id << std::endl;
     }
 
-    if(m==0) m = 1;
-    tu = t; mau = m;
-    cout << tu << "/" << mau <<endl;
-}
-
-int main(){
-    phanso a(2,3);
-    phanso b(3);
-    phanso c;
-    c = 7;
-    cout << endl;
     
-}
 
+private:
+    std::string name;
+    int age;
+    std::string id;
+};
+
+int main() {
+    std::vector<Student> students;
+
+
+    // Create some students with 
+
+    Student student1("John Doe", 18, "123456");
+    Student student2("Jane Smith", 17, "789012");
+
+    // Add students to the vector
+    students.push_back(student1);
+    students.push_back(student2);
+
+    // Display information of all students
+    for (const auto& student : students) {
+        student.displayInfo();
+        std::cout << std::endl;
+    }
+
+    return 0;
+}
