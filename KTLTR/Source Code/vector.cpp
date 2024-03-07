@@ -39,7 +39,7 @@ vector<Array> output(vector<Array> &a, int n){
 
 
 
-// 
+// set up vector by using operator extraction and operator insertioin
 
 void matrixInit(vector<doubleArray> &a, int n){
     a.resize(n);

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include<iostream>
 
 using namespace std;
@@ -80,3 +81,40 @@ int main(){
     cout << "Address: " << student1.getAddress() << endl;
     cout << "Score: " << student1.getScore() << endl;
     return 0;}
+=======
+#include <string>
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+class ToaDo{
+    private:
+        float x;
+        float y;
+    public:
+        ToaDo(){
+            
+        }
+
+        void input(){
+            cin >> x >> y;
+        }
+        void output(){
+            cout << x << " " << y << endl;
+        }
+        float distance( ToaDo& b){
+            return sqrt((x - b.x)* (x - b.x) + (y - b.y)* (y - b.y));
+        }
+};
+
+int main(){
+    ToaDo a;
+    ToaDo b;
+    
+    a.input();
+    b.input();
+    
+    cout << a.distance(b) << endl;
+}
+>>>>>>> a249c73535dd2859a3332d6267e89b45284c1558

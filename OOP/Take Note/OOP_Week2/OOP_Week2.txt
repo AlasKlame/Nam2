@@ -1,0 +1,63 @@
+OOP Buổi 2
+
+
+-Khái niệm về lớp và đối tượng (Object)
+
+b1: Xác định các lớp và đối tượng có trong đề bài
+    +Các thuộc tính
+    +Các phương thức
+...
+
+- Khái niệm về Getter và Setter
+    +Getter dùng để lấy các giá trị trong phần private để sử dụng trong các hàm bên ngoài
+    +Setter dùng để chỉnh sửa trực tiếp các giá trị trong private
+
+    Khai báo Getter :
+        private:
+            float x;
+            float y;
+        public: 
+            float GetterX(){
+                return x;
+            }
+            float GetterY(){
+                return y;
+            }
+        -> Kiểu trả về của Getter phải trùng với kiểu dữ liệu được đặt trong private
+    Khai báo Setter:
+        private:
+            float x;
+            float y;
+        public: 
+            void SetterX(float x){
+                this->x = x;
+            }
+            float SetterY(float y){
+                this->y = y;
+            }
+
+- Phương thức khởi tạo (Constructor và Destructor)
+    - Là cách để khởi tạo giá trị cho các phương thức
+    - Default Constructor: Phương thức khởi tạo mặc định
+        #So sánh với Java và C# 
+        -Là phương thức khởi tạo không có tham số đầu vào 
+        Khai báo:   
+            class Constructor{
+                private:
+                    int a;
+                public:
+                    Constructor(){
+
+                    }
+                ...
+                };
+
+    - Copy Constructor (Phương thức khởi tạo sao chép)
+        Trong C++ khi dùng phương thức khởi tạo sao chép thì ta không được thay đổi cái đối tượng mà ta sao chép
+            int main(){
+                Constructor A;
+                Constructor(const &A)
+
+            }
+
+    - Deep Copy Constructor?
