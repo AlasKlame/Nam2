@@ -30,15 +30,6 @@ class Student{
             cout << diem_toan << endl;
             cout << diem_van << endl;
         }
-        string getName(){
-            return name;
-        }
-        float getDiem_toan(){
-            return diem_toan;
-        }
-        float getDiem_van(){
-            return diem_van;
-        }
 
         float diemTB(){
             return (diem_toan + diem_van)/2;
