@@ -1,0 +1,51 @@
+Biểu diễn số nguyên
+
+-Biểu diễn số nguyên có dấu:
+    1.Dấu lượng.
+        * Bit trái nhất:
+            vd: char x = +5; 00000101
+                char x = -5; 10000101
+        -> bit trái nhất dùng để đánh dấu âm/ dương
+        ##Range của char -127 -> +127  => 255 số trong khi 8bit là 256 -> trùng -0 và +0
+        * Số bù 1.
+            - Tương tụ như trên, bit trái nhất sẽ làm dấu, 7 bit còn lại làm giá trị
+            - Số âm thì lật 7 bit lại
+            vd: char x = 5:     00000101
+                char x = -5:    11111010
+            Cho dãy bit 11110101  đổi ra hệ 10?
+            -> Đổi sang số dương -> NGƯỢC LẠI
+        ## Range của char -127 -> _127 => 255 số và trùng số 0;
+        -> Giải quyết được việc hiệu 2 số ngược nhau = 0; nhưng vẫn bị trùng số 0
+        * Số bù 2: 
+            - Là sự cải tiến của số bù 1.
+            Các bước:
+                *B1: lấy NOT bằng bù 1:
+                *B2: lấy bù 2 bằng cách cộng số 1 vào bit phải cùng.
+        ## Range -128 -> +127 
+            Max Min của số dựa theo giá trị tuyệt đối của bit
+            vd: Max của số dương là: max_2 = 0111 1111; max_10 = 127;
+                Min của số âm là:    min_2 = bù 1 của max_2 = 1000 0000 
+
+        -> Giải quyết được vấn đề trùng số 0
+            vd: số 0 được biểu diễn là 0 = 0000 0000 ; khi biểu diễn bằng bù 2 thì 0 = 1111 1111 + 0000 0001 = 1 0000 0000 = 0(vì vượt quá 8bit)
+                
+         * Số quá thừa K:
+
+- Phép dịch bit và phép xoay:
+    1. Dịch trái:
+        - Dịch tất cả các bit sang trái, bỏ bit trái nhất, thêm 0 vào bit phải nhất
+    2. Dịch phải:
+        - Dịch tất cả các bit sang phải, bỏ bit phải nhất, thêm 0 vào bit trái nhất
+        ## Khi dịch phải của số âm thì thêm số 1 ở đầu bit ( tất cả các bit trống thêm 1)
+
+    3. Xoay trái:
+        - Dịch tất cả các bit sang trái, bit trái nhất thành bit phải nhất.
+    4. Xuay phải:
+        - Dịch tất cả các bit sang phải, bit phải nhất thành bit trái nhất.     
+- Các phép toán trên bit:
+    ...
+
+
+## Viết thuật toán biểu diễn số nhị phân sang số thập phân bằng các phép toán trên bit (Không dùng chia lấy dư)
+
+Bài tập về nhà: Interger Arithmetic:
