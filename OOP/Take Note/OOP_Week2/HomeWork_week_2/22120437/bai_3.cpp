@@ -13,7 +13,7 @@ class DynamicArray{
             arr = new int[size];
         }
 
-        DynamicArray(){
+        ~DynamicArray(){
             delete[] arr;
         }
 
@@ -55,10 +55,8 @@ int main(){
     DynamicArray array(n);
     array.input();
     array.sort();
-    array.secondElement();
     array.output();
     cout << "Phan tu lon thu 2 la \n" << array.secondElement() << endl;
-    DynamicArray();
     return 0;
 
 
