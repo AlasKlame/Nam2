@@ -1,0 +1,9 @@
+- Big - Edian
+- Little Edian 
+
+Pointer Technique
+
+
+trong c/c++ chuỗi kĩ tự luôn có số 0 ở cuối chuỗi
+    -Vẫn tính số lượng byte
+    -Không tính kèm chiều dài chuỗi

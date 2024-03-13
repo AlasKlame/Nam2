@@ -56,7 +56,8 @@ int main(){
     array.input();
     array.sort();
     array.output();
-    cout << "Phan tu lon thu 2 la \n" << array.secondElement() << endl;
+    cout << "\n";
+    cout << "Phan tu lon thu 2 la:" << array.secondElement() << endl;
     return 0;
 
 
