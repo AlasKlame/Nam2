@@ -213,7 +213,6 @@ int** findLargestSubmatrix(int** a, int w, int h, int& w_sub, int& h_sub){
             }
         }
     }
-    // thêm ma trận được đánh dấu vào ma trận child
     for(int i = 0; i < w_sub; i++){
         for(int j = 0; j < h_sub; j++){
             child[i][j]  = a[m + i][n + j];
@@ -222,6 +221,9 @@ int** findLargestSubmatrix(int** a, int w, int h, int& w_sub, int& h_sub){
     return child; 
 
 }
+
+
+
 
 int main(){
     

@@ -15,10 +15,14 @@ void printLastElement(node* head){
     cout << tmp->data;
 }
 
-
+ 
 node* createNewNode(int x){
     node* tmp = new node;
     tmp->data = x;
     tmp->next = nullptr;
     return tmp;
+}
+
+node* addElement(node* head, int x){
+    
 }
