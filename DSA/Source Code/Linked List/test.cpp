@@ -28,7 +28,6 @@ node* print(node* head){
 }
 
 
-// hàm tìm phần tử thứ n tính từ cuối danh sách liên kết đơn
 
 int findNfromEnd(node*head, int n){
     if(head == 0 || head == nullptr){

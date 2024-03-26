@@ -222,27 +222,118 @@ int** findLargestSubmatrix(int** a, int w, int h, int& w_sub, int& h_sub){
 
 }
 
+int linearSearch(int* a, int n, int key){
+    for(int i = 0; i < n; i++){
+        if(a[i] == key){
+            return i;
+        }
+    }
+    return -1;
+
+}
+
+int sentineLinearSearch(int* a, int n, int key){
+    int last = a[n - 1];
+    a[n - 1] = key;
+    int i = 0;
+    while(a[i] != key){
+        i++;
+    }
+    a[n - 1] = last;
+    if(i < n - 1 || a[n - 1] == key){
+        return i;
+    }
+    return -1;
+}
+
+int binarySearch(int* a, int n, int key){
+    int left = 0;
+    int right = n - 1;
+    while(left <= right){
+        int mid = (left + right) / 2;
+        if(a[mid] == key){
+            return mid;
+        }
+        else if(a[mid] < key){
+            left = mid + 1;
+        }
+        else{
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+
+// Recursive 
+int sumOfSquares(int n){
+    if(n == 1){
+        return 1;
+    }
+    return sumOfSquares(n - 1) + n * n;
+    
+    
+}
+
+int GCD(int a, int b){
+    if(b == 0){
+        return a;
+    }
+    return GCD(b, a % b);
+}
+
+bool isPalindrome(int* a, int left, int right){
+    if(left >= right){
+        return true;
+    }
+    if(a[left] != a[right]){
+        return false;
+    }
+    return isPalindrome(a, left + 1, right - 1);
+
+}
+
+int sumOfDigits(int n){
+    if(n == 0){
+        return 0;
+    }
+    return n % 10 + sumOfDigits(n / 10);
+}
+
+int fibonacci(int n){
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
 
 
+int combination(int n, int k){
+    if(k == 0 || k == n){
+        return 1;
+    }
+    return combination(n - 1, k - 1) + combination(n - 1, k);
+}
+
+int recursiveBinarySearch(int* a, int left, int right, int key){
+    if(left > right){
+        return -1;
+    }
+    int mid = (left + right) / 2;
+    if(a[mid] == key){
+        return mid;
+    }
+    else if(a[mid] < key){
+        return recursiveBinarySearch(a, mid + 1, right, key);
+    }
+    else{
+        return recursiveBinarySearch(a, left, mid - 1, key);
+    }
+
+}
 
 int main(){
-    
-    int m, n, w_sub, h_sub;
-    cout << "Enter the size of the matrix: ";
-    cin >> m;
-    cin >> n;
-    cin >> w_sub;
-    cin >> h_sub;
-    
-    int **array = gererateArray2D(m, n);
-    cout << "Generated matrix:" << endl;
-    printArray2D(array, m, n);
-    
-    int **arr_2 = findLargestSubmatrix(array, m ,n, w_sub, h_sub);
-    cout << "Largest Submatrix:" << endl;
-    printArray2D(arr_2, w_sub, h_sub);
-    
-    deleteArray(arr_2, w_sub,h_sub);
-
     return 0;
 }
