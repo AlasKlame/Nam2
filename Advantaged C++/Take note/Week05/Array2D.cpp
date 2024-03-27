@@ -104,14 +104,12 @@ int main(){
     cout << "Nhap kich thuoc mang (d x c) muon cap phat: ";
     cin >> d >> c;
     alloc2D((void***)&a, d, c, sizeof(SOPHUC));
-    arr2D_Input(a);
-    
+    arr2D_Input(a); 
     arr2D_Output(a);
     cout << "Nhap kich thuoc mang muon thay doi kich thuoc (m x n): ";
     cin >> m >> n;
     resize2D((void***)&a, m, n);
     arr2D_Output(a);
-
     free2D((void**)a);
     return 0;
 }
