@@ -2,228 +2,220 @@
 #include <unordered_set> 
 using namespace std;
 
+class CIntArray {
+private:
+    int *m_Array;
+    int m_Length;
 
-class CIntArray{
-    private:
-        int *m_Array;
-        int m_Length;
-    public:
-        CIntArray(){};
-        CIntArray(int *arr, int length){
-            m_Length = length;
-            m_Array = new int[m_Length];
-            for(int i = 0; i < m_Length; i++){
-                m_Array[i] = arr[i];
-            }
-        }
-        ~CIntArray(){
-            delete[] m_Array;
-        };
+public:
+    CIntArray() : m_Array(nullptr), m_Length(0) {}
 
-        void InputArray(){
-            cout << "Enter the length of the array: ";
-            cin >> m_Length;
-            m_Array = new int[m_Length];
-            for(int i = 0; i < m_Length; i++){
-                cout << "Enter the element " << i << " of the array: ";
-                cin >> m_Array[i];
+    CIntArray(int *arr, int length) : m_Length(length) {
+        m_Array = new int[m_Length];
+        for (int i = 0; i < m_Length; i++) {
+            m_Array[i] = arr[i];
+        }
+    }
+
+    ~CIntArray() {
+        delete[] m_Array;
+    }
+
+    void InputArray() {
+        cout << "Enter the length of the array: ";
+        cin >> m_Length;
+        if (m_Length <= 0) {
+            cout << "Invalid length. Please enter a positive integer." << endl;
+            return;
+        }
+        m_Array = new int[m_Length];
+        for (int i = 0; i < m_Length; i++) {
+            cout << "Enter the element " << i << " of the array: ";
+            cin >> m_Array[i];
+        }
+    }
+
+    void OutputArray() {
+        for (int i = 0; i < m_Length; i++) {
+            cout << m_Array[i] << " ";
+        }
+        cout << endl;
+    }
+
+    void Remove() {
+        unordered_set<int> seen;
+        int index = 0;
+        for (int i = 0; i < m_Length; ++i) {
+            if (seen.find(m_Array[i]) == seen.end()) {
+                m_Array[index++] = m_Array[i];
+                seen.insert(m_Array[i]);
             }
         }
-        void OutputArray(){
-            for(int i = 0; i < m_Length; i++){
-                cout << m_Array[i] << " ";
-            }
-            cout << endl;
+        m_Length = index;
+    }
+
+    void Remove(int position) {
+        if (position < 0 || position >= m_Length) {
+            cout << "Invalid position." << endl;
+            return;
         }
-        void Remove() {
-            unordered_set<int> seen; 
-            int index = 0; 
-            for (int i = 0; i < m_Length; ++i) {
-                if (seen.find(m_Array[i]) == seen.end()) { 
-                    m_Array[index++] = m_Array[i]; 
-                    seen.insert(m_Array[i]); 
+        for (int i = position; i < m_Length - 1; i++) {
+            m_Array[i] = m_Array[i + 1];
+        }
+        m_Length--;
+    }
+
+    void Remove(int n, int position) {
+        if (position < 0 || position >= m_Length || n < 0) {
+            cout << "Invalid position or number of elements." << endl;
+            return;
+        }
+        for (int i = position; i < m_Length - n; i++) {
+            m_Array[i] = m_Array[i + n];
+        }
+        m_Length -= n;
+    }
+
+    void Replace(int oldValue, int newValue) {
+        for (int i = 0; i < m_Length; i++) {
+            if (m_Array[i] == oldValue) {
+                m_Array[i] = newValue;
+            }
+        }
+    }
+
+    void AddHead(int n) {
+        m_Length++;
+        int *temp = new int[m_Length];
+        temp[0] = n;
+        for (int i = 1; i < m_Length; i++) {
+            temp[i] = m_Array[i - 1];
+        }
+        delete[] m_Array;
+        m_Array = temp;
+    }
+
+    void AddTail(int n) {
+        m_Length++;
+        int *temp = new int[m_Length];
+        for (int i = 0; i < m_Length - 1; i++) {
+            temp[i] = m_Array[i];
+        }
+        temp[m_Length - 1] = n;
+        delete[] m_Array;
+        m_Array = temp;
+    }
+
+    void Insert(int value, int position) {
+        if (position < 0 || position > m_Length) {
+            cout << "Invalid position." << endl;
+            return;
+        }
+        m_Length++;
+        int *temp = new int[m_Length];
+        for (int i = 0; i < position; i++) {
+            temp[i] = m_Array[i];
+        }
+        temp[position] = value;
+        for (int i = position + 1; i < m_Length; i++) {
+            temp[i] = m_Array[i - 1];
+        }
+        delete[] m_Array;
+        m_Array = temp;
+    }
+
+    int Max() {
+        int max = m_Array[0];
+        for (int i = 1; i < m_Length; i++) {
+            if (m_Array[i] > max) {
+                max = m_Array[i];
+            }
+        }
+        return max;
+    }
+
+    int Min() {
+        int min = m_Array[0];
+        for (int i = 1; i < m_Length; i++) {
+            if (m_Array[i] < min) {
+                min = m_Array[i];
+            }
+        }
+        return min;
+    }
+
+    void Ascending() {
+        for (int i = 0; i < m_Length; i++) {
+            for (int j = i + 1; j < m_Length; j++) {
+                if (m_Array[i] > m_Array[j]) {
+                    swap(m_Array[i], m_Array[j]);
                 }
             }
-            m_Length = index; 
         }
-        CIntArray Remove(int position) {
-            if (position < 0 || position >= m_Length) {
-                throw out_of_range("Invalid position");
-            }
-            for (int i = position; i < m_Length - 1; i++) {
-                m_Array[i] = m_Array[i + 1];
-            }
-            
-            m_Length--;
-            return *this;
-        }
+    }
 
-
-        CIntArray Remove(int n, int position){
-            for(int i = position; i < m_Length - n; i++){
-                m_Array[i] = m_Array[i + n];
-            }
-            m_Length -= n;
-            return *this;
-        }
-
-        CIntArray Replace(int oldValue, int newValue){
-            for(int i = 0; i < m_Length; i++){
-                if(m_Array[i] == oldValue){
-                    m_Array[i] = newValue;
+    void Descending() {
+        for (int i = 0; i < m_Length; i++) {
+            for (int j = i + 1; j < m_Length; j++) {
+                if (m_Array[i] < m_Array[j]) {
+                    swap(m_Array[i], m_Array[j]);
                 }
             }
-            return *this;
         }
-        CIntArray AddHead(int n){
-            m_Length++;
-            int *temp = new int[m_Length];
-            temp[0] = n;
-            for(int i = 1; i < m_Length; i++){
-                temp[i] = m_Array[i - 1];
-            }
-            delete[] m_Array;
-            m_Array = temp;
-            return *this;
-        }
+    }
 
-        CIntArray AddTail(int n){
-            m_Length++;
-            int *temp = new int[m_Length];
-            for(int i = 0; i < m_Length - 1; i++){
-                temp[i] = m_Array[i];
+    bool IsSymmetry() {
+        for (int i = 0; i < m_Length / 2; i++) {
+            if (m_Array[i] != m_Array[m_Length - i - 1]) {
+                return false;
             }
-            temp[m_Length - 1] = n;
-            delete[] m_Array;
-            m_Array = temp;
-            return *this;
         }
+        return true;
+    }
 
-        CIntArray Insert(int value, int position){
-            m_Length++;
-            int *temp = new int[m_Length];
-            for(int i = 0; i < position; i++){
-                temp[i] = m_Array[i];
-            }
-            temp[position] = value;
-            for(int i = position + 1; i < m_Length; i++){
-                temp[i] = m_Array[i - 1];
-            }
-            delete[] m_Array;
-            m_Array = temp;
-            return *this;
+    void MoveForward(int n = 1) {
+        if (n <= 0) {
+            cout << "Invalid number of positions." << endl;
+            return;
         }
-
-        int Max(){
-            int max = m_Array[0];
-            for(int i = 1; i < m_Length; i++){
-                if(m_Array[i] > max){
-                    max = m_Array[i];
-                }
-            }
-            return max;
-        }
-        int Min(){
-            int min = m_Array[0];
-            for(int i = 1; i < m_Length; i++){
-                if(m_Array[i] < min){
-                    min = m_Array[i];
-                }
-            }
-            return min;
-        }
-
-        CIntArray Ascending(){
-            for(int i = 0; i < m_Length; i++){
-                for(int j = i; j < m_Length; j++){
-                    if(m_Array[i] > m_Array[j]){
-                        int temp = m_Array[i];
-                        m_Array[i] = m_Array[j];
-                        m_Array[j] = temp;
-                    }
-                }
-            }
-            return *this;
-        }
-
-        CIntArray Descending(){
-            for(int i = 0; i < m_Length; i++){
-                for(int j = i; j < m_Length; j++){
-                    if(m_Array[i] < m_Array[j]){
-                        int temp = m_Array[i];
-                        m_Array[i] = m_Array[j];
-                        m_Array[j] = temp;
-                    }
-                }
-            }
-            return *this;
-        }
-
-        bool IsSymmetry(){
-            for(int i = 0; i < m_Length / 2; i++){
-                if(m_Array[i] != m_Array[m_Length - i - 1]){
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        CIntArray MoveForward(){
+        for (int k = 0; k < n; k++) {
             int temp = m_Array[0];
-            for(int i = 0; i < m_Length - 1; i++){
+            for (int i = 0; i < m_Length - 1; i++) {
                 m_Array[i] = m_Array[i + 1];
             }
             m_Array[m_Length - 1] = temp;
-            return *this;
         }
-        CIntArray MoveForward(int n){
-            for(int i = 0; i < n; i++){
-                int temp = m_Array[0];
-                for(int j = 0; j < m_Length - 1; j++){
-                    m_Array[j] = m_Array[j + 1];
-                }
-                m_Array[m_Length - 1] = temp;
-            }
-            return *this;
-        }
+    }
 
-        CIntArray MoveBehind(){
+    void MoveBehind(int n = 1) {
+        if (n <= 0) {
+            cout << "Invalid number of positions." << endl;
+            return;
+        }
+        for (int k = 0; k < n; k++) {
             int temp = m_Array[m_Length - 1];
-            for(int i = m_Length - 1; i > 0; i--){
+            for (int i = m_Length - 1; i > 0; i--) {
                 m_Array[i] = m_Array[i - 1];
             }
             m_Array[0] = temp;
-            return *this;
         }
-        CIntArray MoveBehind(int n){
-            for(int i = 0; i < n; i++){
-                int temp = m_Array[m_Length - 1];
-                for(int j = m_Length - 1; j > 0; j--){
-                    m_Array[j] = m_Array[j - 1];
-                }
-                m_Array[0] = temp;
-            }
-            return *this;
-        }
+    }
 
-        CIntArray Invert(){
-            for(int i = 0; i < m_Length / 2; i++){
-                int temp = m_Array[i];
-                m_Array[i] = m_Array[m_Length - i - 1];
-                m_Array[m_Length - i - 1] = temp;
-            }
-            return *this;
+    void Invert() {
+        for (int i = 0; i < m_Length / 2; i++) {
+            swap(m_Array[i], m_Array[m_Length - i - 1]);
         }
+    }
 
-        int Appearance(int n){
-            int count = 0;
-            for(int i = 0; i < m_Length; i++){
-                if(m_Array[i] == n){
-                    count++;
-                }
+    int Appearance(int n) {
+        int count = 0;
+        for (int i = 0; i < m_Length; i++) {
+            if (m_Array[i] == n) {
+                count++;
             }
-            return count;
         }
+        return count;
+    }
 };
 
 int main(){
