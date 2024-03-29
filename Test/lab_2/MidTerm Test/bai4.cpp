@@ -1,27 +1,47 @@
-#include<iostream>
-#include<cmath>
+#include <iostream>
 
 using namespace std;
 
+const int MAX_SIZE = 100; // Giả sử rằng n sẽ không vượt quá 25 vì 4*25-3 = 97 là dưới 100
 
-int main(){
-    int n;
-    cin >> n;
-    int a = 4* n - 3;
-    int b = 2* n - 1;
-    for(int i = 0; i < 2*n -1; i++){
-        for(int j = 0; j < 4*n -3; j++){
-        
-            if(i == j){
-                for(int k = 0; k < 2*n -1; k++){
-                    cout << "*" << " ";
-                }
-            }
-            else{
-                cout << "*";
-            }
+void printPattern(int n) {
+    int size = n * 4 - 3;
+    char arr[MAX_SIZE][MAX_SIZE];
 
+    // Khởi tạo mảng với khoảng trắng
+    for(int i = 0; i < size; ++i) {
+        for(int j = 0; j < size; ++j) {
+            arr[i][j] = ' ';
         }
-        cout <<endl;
     }
+
+    for (int layer = 0; layer < n; ++layer) {
+        int upperLeft = layer * 2; 
+        int lowerRight = size - layer * 2 - 1; 
+        for (int i = upperLeft; i <= lowerRight; ++i) {
+            arr[upperLeft][i] = arr[lowerRight][i] = '*';
+            arr[i][upperLeft] = arr[i][lowerRight] = '*';
+        }
+    }
+
+    for (int y = 0; y < size; y++) {
+        if (y % 2 == 0) { // Chỉ in các dòng chẵn
+            for (int x = 0; x < size; x++) {
+                cout << arr[y][x];
+            }
+            cout << endl; 
+        }
+    }
+}
+
+int main() {
+    int n;
+    cout << "Input: n = ";
+    cin >> n;
+    if(n * 4 - 3 > MAX_SIZE) {
+        cout << "Error: n is too large for the maximum size." << endl;
+    } else {
+        printPattern(n);
+    }
+    return 0;
 }
