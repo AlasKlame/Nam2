@@ -190,3 +190,116 @@ int countLeaf(Node* root){
     }
     return countLeaf(root->pLeft) + countLeaf(root->pRight);
 }
+
+
+int countLess(Node* root, int x){
+    if(root == NULL){
+        return 0;
+    }
+    if(root->data < x){
+        return 1 + countLess(root->pLeft, x) + countLess(root->pRight, x);
+    }else if(root->data == x){
+        return 1 + countLess(root->pLeft, x);
+    }else{
+        return countLess(root->pLeft, x);
+    }
+}
+
+int countGreater(Node* root, int x){
+    if(root == NULL){
+        return 0;
+    }
+    if(root->data > x){
+        return 1 + countGreater(root->pLeft, x) + countGreater(root->pRight, x);
+    }
+    else if(root->data == x){
+        return 1 + countGreater(root->pRight, x);
+    }
+    else{
+        return countGreater(root->pRight, x);
+    }
+}
+
+bool isBST(Node* root, int min, int max){
+    if(root == NULL ){
+        return true;
+    }
+    if(root->data > max || root->data < min){
+        return false;
+    }
+    bool leftValid = isBST(root->pLeft, min, root->data) ;
+    bool rightValid = isBST(root->pRight, root->data, max);
+    return leftValid && rightValid;
+}
+
+
+int minNode(Node* root){
+    if(root == NULL){
+        return 0;
+    }
+    if(root->pLeft == NULL){
+        return root->data;
+    }
+    return minNode(root->pLeft);
+}
+
+int maxNode(Node* root){
+    if(root == NULL){
+        return 0;
+    }
+    if(root->pRight == NULL){
+        return root->data;
+    }
+    return maxNode(root->pRight);
+}
+
+bool isFullBST(Node* root){
+    if(root == NULL){
+        return true;
+    }
+    if(root->pLeft == NULL && root->pRight == NULL){
+        return true;
+    }
+    if((root->pLeft == NULL && root->pRight != NULL) || (root->pLeft != NULL && root->pRight != NULL)){
+        return false;
+    }
+    return isFullBST(root->pLeft) && isFullBST(root->pRight);
+}
+
+
+int main(){
+    Node *root = NULL;
+    int arr[] = {5, 3, 7, 2, 4, 6, 8};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    root = createBST(arr, n);
+    
+    int x = 5;
+    int min = minNode(root);
+    cout << "Min of BST: " << min << endl;
+    int max = maxNode(root);
+    cout << "Max of BST: " << max << endl;
+
+    if(isBST(root, min, max)){
+        cout << "true" <<endl;
+    }
+    else{
+        cout << "false" << endl;
+    }
+    if(isFullBST(root)){
+        cout << "true" << endl;
+    }
+    else{
+        cout << "false" << endl;
+    }
+
+    int lessCount = countLess(root, x);
+    cout << "Number of nodes less than " << x << ": " << lessCount << endl;
+    
+    int greaterCount = countGreater(root, x);
+    cout << "Number of nodes greater than " << x << ": " << greaterCount << endl;
+    
+    removeBST(root);
+    
+    return 0;
+}
