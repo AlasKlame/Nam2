@@ -335,5 +335,5 @@ int recursiveBinarySearch(int* a, int left, int right, int key){
 }
 
 int main(){
-    return 0;
+    
 }

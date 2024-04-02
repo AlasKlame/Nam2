@@ -32,10 +32,29 @@ int solve(int n){
     return max;
 }
 
+int checkNgto(int a, int b){
+    int maxValue = max(a,b);
+    int count = 0; int count_1 = 0;
+        for(int i = 0; i < maxValue; i++){
+            
+            if(a % i == 0 && b % i != 0){
+                count++;
+            }
+            if(i == a) count--;
+            if(a % i != 0 && b % i ==0){
+                count_1++;
+            }
+            if(i == b){
+                count_1--;
+            }
+        }
+    return abs(count - count_1);
+}
+
 int main(){
-    int n;
-    cin >>n;
-    int max = solve(n);
+    int a, b;
+    cin >>a >> b;
+    int max = checkNgto(a,b);
     cout << max << endl;
     return 0;
 }
