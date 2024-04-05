@@ -437,6 +437,7 @@ int main(){
                     cout << "Element not found in the list" << endl;
                 }
                 break;
+            
             }
             case 0: {
                 removeAll(list);

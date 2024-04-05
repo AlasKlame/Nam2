@@ -15,7 +15,7 @@ void printPattern(int n) {
     }
  
     for (int layer = 0; layer < n; ++layer) {
-        int upperLeft = layer * 2; 
+        int upperLeft = layer * 2;  
         int lowerRight = size - layer * 2 - 1; 
         for (int i = upperLeft; i <= lowerRight; ++i) {
             arr[upperLeft][i] = arr[lowerRight][i] = '*';
@@ -24,7 +24,7 @@ void printPattern(int n) {
     }
  
     for (int y = 0; y < size; y++) {
-        if (y % 2 == 0) { // Chỉ in các dòng chẵn
+        if (y % 2 == 0) {           
             for (int x = 0; x < size; x++) {
                 cout << arr[y][x];
             }

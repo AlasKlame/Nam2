@@ -1,0 +1,15 @@
+00:00:01Da ghi file vao file: 
+2. Ghi file
+3. Tang thoi gian len 1 giay
+4. Giam thoi gian di 1 gio
+5. Cong them n gio
+6. Tru di n gio
+7. Cong 2 thoi gian
+8. Tru 2 thoi gian
+9. So sanh 2 thoi gian lon hon
+10. So sanh 2 thoi gian nho hon
+11. So sanh 2 thoi gian lon hon hoac bang
+12. So sanh 2 thoi gian nho hon hoac bang
+13. So sanh 2 thoi gian bang nhau
+14. Thoat
+Nhap su lua chon: 
