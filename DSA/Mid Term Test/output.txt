@@ -1,0 +1,18 @@
+ID: 11119a
+Ten: Boku no pico
+Nam xuat ban: 2000
+Gia: 25000
+Giam gia: 0.1
+Gia gia: 22500
+ID: 1099a
+Ten: Toi la Toan
+Nam xuat ban: 2024
+Gia: 100000
+Giam gia: 0.49
+Gia gia: 51000
+ID: bca1192
+Ten: Toi la kien
+Nam xuat ban: 1990
+Gia: 60000
+Giam gia: 0.12
+Gia gia: 52800
