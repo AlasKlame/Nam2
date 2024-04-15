@@ -15,6 +15,27 @@ int sum(Node* root){
     return sum(root->left) + root->data + sum(root->right);
 }
 
+int countLeaf(Node* root){
+    if(root == NULL){
+        return 0;
+    }
+    if(root->left == NULL && root->right == NULL){
+        return 1;
+    }
+    return countLeaf(root->left) + countLeaf(root->right);
+
+}
+
+int countChild(Node* root){
+    if(root == NULL){
+        return 0;\
+    }
+    if((root->left == NULL && root-> right != NULL) || (root->left != NULL && root->right == NULL) ){
+        return 1;
+    }
+    return countChild(root->left) + countChild(root->right);
+}
+
 int sumofLeaf(Node* root){
     if(root == NULL){
         return 0;
@@ -84,11 +105,13 @@ int main(){
     addNode(root, 2);
     addNode(root, 4);
     addNode(root, 6);
+    addNode(root, 1);
+    addNode(root, 9);
     addNode(root, 8);
     printNode(root);
     cout << endl;
-    cout << sum(root);
+    cout << countLeaf(root);
     cout << endl;
-    cout << sumofEvenLeaf(root);
+    cout << countChild(root);
     return 0;
 }
