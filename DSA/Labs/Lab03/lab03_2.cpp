@@ -4,109 +4,161 @@ using namespace std;
 
 
 struct Node{
-    int key;
-    Node* pLeft;
-    Node* pRight;
-    int height;
+    int key ;
+    Node * pLeft ;
+    Node * pRight ;
+    int height ;
 };
 
-
 Node* createNode(int data){
-    Node* newNode = new Node;
-    newNode->key = data;
-    newNode->pLeft = newNode->pRight = NULL;
-    newNode->height = 1;
-    return newNode;
-}
-
-Node* turnLeft(Node* root){
-    Node* p = root->pRight;
-    root->pRight = p->pLeft;
-    p->pLeft = root;
-    return p;
-
-}
-
-Node* turnRight(Node* root){
-    Node* p = root->pLeft;
-    root->pLeft = p->pRight;
-    p->pRight = root;
+    Node* p = new Node;
+    if(p == NULL){
+        cout << "Memory allocation failed!" << endl;
+        return NULL;
+    }
+    p->key = data;
+    p->pLeft = NULL;
+    p->pRight = NULL;
+    p->height = 1;
     return p;
 }
 
 
-void Insert(Node* root, int data){
-    if(root == NULL){
-        root = createNode(data);
+
+Node *turnLeft(Node* pRoot){
+    Node* pTemp = pRoot->pRight;
+    pRoot->pRight = pTemp->pLeft;
+    pTemp->pLeft = pRoot;
+    pRoot->height = max(pRoot->pLeft->height, pRoot->pRight->height) + 1;
+    pTemp->height = max(pTemp->pLeft->height, pTemp->pRight->height) + 1;
+    return pTemp;
+}
+
+Node *turnRight(Node* pRoot){
+    Node* pTemp = pRoot->pLeft;
+    pRoot->pLeft = pTemp->pRight;
+    pTemp->pRight = pRoot;
+    pRoot->height = max(pRoot->pLeft->height, pRoot->pRight->height) + 1;
+    pTemp->height = max(pTemp->pLeft->height, pTemp->pRight->height) + 1;
+    return pTemp;
+}
+
+bool balance(Node* pRoot){
+    if(pRoot == NULL){
+        return true;
+    }
+    int leftHeight = 0;
+    int rightHeight = 0;
+    if(pRoot->pLeft != NULL){
+        leftHeight = pRoot->pLeft->height;
+    }
+    if(pRoot->pRight != NULL){
+        rightHeight = pRoot->pRight->height;
+    }
+    if(leftHeight - rightHeight > 1 || leftHeight - rightHeight < -1){
+        return false;
+    }
+    return true;
+}
+
+void Insert(Node* &pRoot, int data) {
+    if (pRoot == NULL) {
+        pRoot = createNode(data);
         return;
     }
-    if(data < root->key){
-        Insert(root->pLeft, data);
-    }else{
-        Insert(root->pRight, data);
+    if (data < pRoot->key) {
+        Insert(pRoot->pLeft, data);
+    } else if (data > pRoot->key) {
+        Insert(pRoot->pRight, data);
+    } else {
+        // Handle duplicate key scenario if needed
+        return;
     }
-    root->height = max(root->pLeft->height, root->pRight->height) + 1;
-    int balance = root->pLeft->height - root->pRight->height;
-    if(balance > 1){
-        if(data < root->pLeft->key){
-            root = turnRight(root);
-        }else{
-            root->pLeft = turnLeft(root->pLeft);
-            root = turnRight(root);
-        }
-    }else if(balance < -1){
-        if(data > root->pRight->key){
-            root = turnLeft(root);
-        }else{
-            root->pRight = turnRight(root->pRight);
-            root = turnLeft(root);
-        }
+
+    // Update the height of the ancestor node
+    pRoot->height = max(pRoot->pLeft->height, pRoot->pRight->height) + 1;
+
+
+    // Get the balance factor to check whether this node became unbalanced
+    int balance = (pRoot->pLeft ? pRoot->pLeft->height : 0) - 
+                  (pRoot->pRight ? pRoot->pRight->height : 0);
+
+    // If this node becomes unbalanced, then there are 4 cases
+
+    // Left Left Case
+    if (balance > 1 && data < pRoot->pLeft->key) {
+        pRoot = turnRight(pRoot);
+    }
+
+    // Left Right Case
+    else if (balance > 1 && data > pRoot->pLeft->key) {
+        pRoot->pLeft = turnLeft(pRoot->pLeft);
+        pRoot = turnRight(pRoot);
+    }
+
+    // Right Right Case
+    else if (balance < -1 && data > pRoot->pRight->key) {
+        pRoot = turnLeft(pRoot);
+    }
+
+    // Right Left Case
+    else if (balance < -1 && data < pRoot->pRight->key) {
+        pRoot->pRight = turnRight(pRoot->pRight);
+        pRoot = turnLeft(pRoot);
     }
 }
 
-void Remove(Node* &root, int x){
+
+void remove(Node *&root, int x){
     if(root == NULL){
         return;
     }
     if(x < root->key){
-        Remove(root->pLeft, x);
+        remove(root->pLeft, x);
     }else if(x > root->key){
-        Remove(root->pRight, x);
+        remove(root->pRight, x);
     }else{
         if(root->pLeft == NULL && root->pRight == NULL){
             delete root;
             root = NULL;
         }else if(root->pLeft == NULL){
-            Node* p = root;
+            Node *temp = root;
             root = root->pRight;
-            delete p;
+            delete temp;
         }else if(root->pRight == NULL){
-            Node* p = root;
+            Node *temp = root;
             root = root->pLeft;
-            delete p;
+            delete temp;
         }else{
-            Node* p = root->pRight;
-            while(p->pLeft != NULL){
-                p = p->pLeft;
+            Node *temp = root->pRight;
+            while(temp->pLeft != NULL){
+                temp = temp->pLeft;
             }
-            root->key = p->key;
-            Remove(root->pRight, p->key);
+            root->key = temp->key;
+            remove(root->pRight, temp->key);
         }
     }
     if(root == NULL){
         return;
     }
-    root->height = max(root->pLeft->height, root->pRight->height) + 1;
-    int balance = root->pLeft->height - root->pRight->height;
-    if(balance > 1){
-        if(root->pLeft->pLeft->height >= root->pLeft->pRight->height){
+    int leftHeight = 0;
+    int rightHeight = 0;
+    if(root->pLeft != NULL){
+        leftHeight = root->pLeft->height;
+    }
+    if(root->pRight != NULL){
+        rightHeight = root->pRight->height;
+    }
+    root->height = max(leftHeight, rightHeight) + 1;
+    if(leftHeight - rightHeight > 1){
+        if(balance(root->pLeft)){
             root = turnRight(root);
         }else{
             root->pLeft = turnLeft(root->pLeft);
             root = turnRight(root);
         }
-    }else if(balance < -1){
-        if(root->pRight->pRight->height >= root->pRight->pLeft->height){
+    }else if(leftHeight - rightHeight < -1){
+        if(balance(root->pRight)){
             root = turnLeft(root);
         }else{
             root->pRight = turnRight(root->pRight);
@@ -115,37 +167,50 @@ void Remove(Node* &root, int x){
     }
 }
 
-bool isAVL(Node* root){
-    if(root == NULL){
+
+bool isAVL(Node* pRoot){
+    if(pRoot == NULL){
         return true;
     }
-    if(abs(root->pLeft->height - root->pRight->height) > 1){
+    if(!balance(pRoot)){
         return false;
     }
-    return isAVL(root->pLeft) && isAVL(root->pRight);
+    return isAVL(pRoot->pLeft) && isAVL(pRoot->pRight);
 }
 
-void printAVL(Node* root){
-    if(root == NULL){
+void print(Node* pRoot){
+    if(pRoot == NULL){
         return;
     }
-    cout << root->key << " ";
-    printAVL(root->pLeft);
-    
-    printAVL(root->pRight);
+    cout << pRoot->key << " ";
+    print(pRoot->pLeft);
+    print(pRoot->pRight);
+}
 
+void deleteTree(Node* &pRoot){
+    if(pRoot == NULL){
+        return;
+    }
+    deleteTree(pRoot->pLeft);
+    deleteTree(pRoot->pRight);
+    delete pRoot;
+    pRoot = NULL;
 }
 
 int main(){
-    Node* root = NULL;
-    Insert(root, 10);
-    Insert(root, 20);
-    Insert(root, 30);
-    Insert(root, 40);
-    Insert(root, 50);
-    Insert(root, 25);
-    Insert(root, 15);
-    Insert(root, 5);
-    
-    printAVL(root);
+    Node* pRoot = NULL;
+    Insert(pRoot, 10);
+    Insert(pRoot, 20);
+    Insert(pRoot, 30);
+    Insert(pRoot, 15);
+    Insert(pRoot, 25);
+    Insert(pRoot, 5);
+    Insert(pRoot, 35);
+    Insert(pRoot, 40);
+    Insert(pRoot, 45);
+    Insert(pRoot, 50);
+    Insert(pRoot, 55);
+
+    print(pRoot);
+    deleteTree(pRoot);
 }
