@@ -1,122 +1,149 @@
-#include<iostream>
-#include<fstream>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+
 using namespace std;
 
-int countSizeofFile(ifstream &inputFile){
-    int size = 0;
-    int temp;
-    while(inputFile >> temp){
-        size++;
-    }
-    inputFile.clear();
-    inputFile.seekg(0, ios::beg);
-    return size;
-}
+vector<int> DATA;
+vector<vector<int>> history;
+int currentHistoryIndex = -1;
 
-int* input(ifstream &inputFile, int size){
-    
-    int *arr = new int[size];
-    for(int i = 0; i < size; i++){
-        inputFile >> arr[i];
-        
-    }
-    return arr;
-    
-}
-
-void output(int *arr, int size){
-    for(int i = 0; i < size; i++){
-        cout << arr[i] << " ";
-    }
-}
-
-
-
-void deletePos(int arr[], int &size, int pos){
-    for(int i = pos; i < size - 1; i++){
-        arr[i] = arr[i + 1];
-    }
-    size--;
-}
-
-void insert(int arr[], int &size, int pos, int value){
-    for(int i = size; i > pos; i--){
-        arr[i] = arr[i - 1];
-    }
-    arr[pos] = value;
-    size++;
-}
-
-
-
-
-
-
-int main(){
-    ifstream inputFile("input.txt");
-    ofstream outputFile("output.txt");
-
-    if(!inputFile.is_open()){
-        cout << "Cannot open file" << endl;
+int loadFile(const string& filename) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Cannot open file." << endl;
         return 0;
     }
-    int size = countSizeofFile(inputFile);
-    int *a = input(inputFile, size);
-    int memory = 0;
+    int number;
+    while (file >> number) {
+        DATA.push_back(number);
+    }
+    file.close();
+    return 1;
+}
+
+void saveToFile(const string& filename) {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cout << "Cannot open file." << endl;
+        return;
+    }
+    for (int num : DATA) {
+        file << num << " ";
+    }
+    file.close();
+    cout << "DATA saved to " << filename << endl;
+}
+
+void printDATA() {
+    for (int num : DATA) {
+        cout << num << " ";
+    }
+    cout << endl;
+}
+
+void pushToHistory() {
+    if (currentHistoryIndex < history.size() - 1) {
+        history.erase(history.begin() + currentHistoryIndex + 1, history.end());
+    }
+    history.push_back(DATA);
+    currentHistoryIndex++;
+}
+
+void undo() {
+    if (currentHistoryIndex > 0) {
+        currentHistoryIndex--;
+        DATA = history[currentHistoryIndex];
+        printDATA();
+    } else {
+        cout << "No more undo steps available." << endl;
+    }
+}
+
+void redo() {
+    if (currentHistoryIndex < history.size() - 1) {
+        currentHistoryIndex++;
+        DATA = history[currentHistoryIndex];
+        printDATA();
+    } else {
+        cout << "No more redo steps available." << endl;
+    }
+}
+
+void deleteElement(int pos) {
+    if (pos < 0 || pos >= DATA.size()) {
+        cout << "Invalid position." << endl;
+        return;
+    }
+    pushToHistory();
+    DATA.erase(DATA.begin() + pos);
+}
+
+void insertElement(int pos, int value) {
+    if (pos < 0 || pos > DATA.size()) {
+        cout << "Invalid position." << endl;
+        return;
+    }
+    pushToHistory();
+    DATA.insert(DATA.begin() + pos, value);
+}
+
+int main() {
+    if (!loadFile("input.txt")) {
+        return 0;
+    }
 
     int choice;
-    do{
+    do {
         cout << "------------------------" << endl;
-        cout << "Cac lenh xu ly du lieu: " << endl;
-        cout << "1. Xoa phan tu tai vi tri pos" << endl;
-        cout << "2. Them phan tu tai vi tri pos" << endl;
-        cout << "________________________" << endl;
-        cout << "Cac lenh chuc nang" << endl;
+        cout << "1. Delete element at position" << endl;
+        cout << "2. Insert element at position" << endl;
         cout << "3. Undo" << endl;
         cout << "4. Redo" << endl;
         cout << "5. Save" << endl;
         cout << "6. Reset" << endl;
         cout << "7. Quit" << endl;
         cout << "------------------------" << endl;
-        cout << "Nhap lua chon: " << endl;
+        cout << "Choose an option: ";
         cin >> choice;
-        memory = choice;
-        switch(choice)
-        {
-            case 1:{
-                int pos;
-                cout << "Nhap vi tri can xoa: ";
+
+        int pos, value;
+        switch (choice) {
+            case 1:
+                cout << "Enter position to delete: ";
                 cin >> pos;
-                deletePos(a, size, pos);
-                output(a, size);
-                cout << endl;
+                deleteElement(pos);
+                printDATA();
                 break;
-            } ;
-            case 2:{
-                int pos, value;
-                cout << "Nhap vi tri can them: ";
+            case 2:
+                cout << "Enter position to insert: ";
                 cin >> pos;
-                cout << "Nhap gia tri can them: ";
+                cout << "Enter value to insert: ";
                 cin >> value;
-                insert(a, size, pos, value);
-                output(a, size);
-                cout << endl;
+                insertElement(pos, value);
+                printDATA();
                 break;
-            } 
             case 3:
-                
-                for(int i = 0; i < size; i++){
-                    outputFile << a[i] << " ";
-                }
-                cout << "Da luu file" << endl;
+                undo();
+                break;
+            case 4:
+                redo();
+                break;
+            case 5:
+                saveToFile("output.txt");
+                break;
+            case 6:
+                DATA.clear();
+                loadFile("input.txt");
+                break;
+            case 7:
+                cout << "Exiting program." << endl;
                 break;
             default:
-                break;
-
+                cout << "Invalid option, try again." << endl;
         }
-            
+    } while (choice != 7);
 
-    }while(choice != 7);
-    
-
+    return 0;
 }
