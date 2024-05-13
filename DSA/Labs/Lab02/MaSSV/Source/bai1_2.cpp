@@ -14,11 +14,13 @@ int recursiveSquareSum(int n, int& count_assignments, int& count_comparisons) {
     return result;
 }
 
-int recursiveSquareNums(int n){
+int recursiveSquareNums(int n, int &count_assignments, int& count_comparisons) {
+    count_assignments++;
     if(n < 1){
         return 0;
     }
-    return n * n + recursiveSquareNums(n - 1);
+    count_assignments += 1;
+    return n * n + recursiveSquareNums(n - 1, count_assignments, count_comparisons);
 }
 
 int main(){

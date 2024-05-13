@@ -19,7 +19,7 @@ public:
 
     int getDay() const {
         return day;
-    }
+    }  
     int getMonth() const {
         return month;
     }
