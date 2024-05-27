@@ -69,10 +69,10 @@ Fraction findSmallestFraction(Fraction fractions[], int numFractions) {
 struct Student {
     int id;
     string name;
-    float scores[3]; // [mathScore, physicsScore, chemistryScore]
+    float scores[3];
 };
 
-// Hàm tính điểm trung bình
+
 float calculateAverageScore(Student student) {
     return (student.scores[0] + student.scores[1] + student.scores[2]) / 3;
 }
