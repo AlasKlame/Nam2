@@ -86,29 +86,29 @@ void Insert(Node* &pRoot, SV data) {
 
 
 
-    int balance = (pRoot->left ? pRoot->left->height : 0) - 
-                  (pRoot->right ? pRoot->right->height : 0);
+        int balance = (pRoot->left ? pRoot->left->height : 0) - 
+                    (pRoot->right ? pRoot->right->height : 0);
 
 
-    if (balance > 1 && data.MSSV < pRoot->left->data.MSSV) {
-        pRoot = turnRight(pRoot);
+        if (balance > 1 && data.MSSV < pRoot->left->data.MSSV) {
+            pRoot = turnRight(pRoot);
+        }
+
+        else if (balance > 1 && data.MSSV > pRoot->left->data.MSSV) {
+            pRoot->left = turnLeft(pRoot->left);
+            pRoot = turnRight(pRoot);
+        }
+
+        
+        else if (balance < -1 && data.MSSV > pRoot->right->data.MSSV) {
+            pRoot = turnLeft(pRoot);
+        }
+
+        else if (balance < -1 && data.MSSV < pRoot->right->data.MSSV) {
+            pRoot->right = turnRight(pRoot->right);
+            pRoot = turnLeft(pRoot);
+        }
     }
-
-    else if (balance > 1 && data.MSSV > pRoot->left->data.MSSV) {
-        pRoot->left = turnLeft(pRoot->left);
-        pRoot = turnRight(pRoot);
-    }
-
-    
-    else if (balance < -1 && data.MSSV > pRoot->right->data.MSSV) {
-        pRoot = turnLeft(pRoot);
-    }
-
-    else if (balance < -1 && data.MSSV < pRoot->right->data.MSSV) {
-        pRoot->right = turnRight(pRoot->right);
-        pRoot = turnLeft(pRoot);
-    }
-}
 
 
 void readSVFromFile(string fileName, Node* &root){
@@ -201,6 +201,7 @@ void print(Node* pRoot){
     cout << pRoot->data.DTB << endl;
     print(pRoot->right);
 }
+
 
 
 int main(){
