@@ -364,4 +364,4 @@ int main() {
 
     goods.Buy(in2, out3);
     goods.viewQuantity(out4);
-}
+}   
